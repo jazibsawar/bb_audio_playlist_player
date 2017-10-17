@@ -2,8 +2,10 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
-
- .bb-playlist .wp-playlist-tracks{
+.bb-playlist{
+    max-width: 525px !important;
+}
+.bb-playlist .wp-playlist-tracks{
     max-height: 250px;
     overflow: auto;
- }
+}

@@ -64,7 +64,7 @@ class Playlist
             // Enqueue default scripts and styles for the playlist.
             if( 1 === $this->instance ){
                 do_action( 'wp_playlist_scripts', esc_attr( $this->type ), esc_attr( $atts['style'] ) );
-                wp_enqueue_style( $this->plugin_name, plugin_dir_url(__DIR__ . '..') . 'css/bb-playlist.css', array(), $this->version, 'all' );
+                wp_enqueue_style( $this->plugin_name, plugin_dir_url(__DIR__ . '..') . 'css/bb-playlist-player.css', array(), $this->version, 'all' );
             }   
 
             /* HTML output for playlist*/
