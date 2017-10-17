@@ -1,0 +1,67 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+.bb-playlist .playlist-item {
+    border: 1px solid #DDD;
+    padding: 20px 5px;
+    margin: 10px 0px;
+}
+
+.bb-playlist .playlist-item table {
+    width: 100%;
+}
+.bb-playlist .playlist-item table td{
+    margin: 0;
+    padding: 0;
+}
+.bb-playlist .playlist-item table td.input {
+    width: calc(100% - 100px);
+}
+
+.bb-playlist div.input_label {
+    width: 60px;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.bb-playlist div.input_field {
+    width: calc(100% - 75px);
+    display: inline-block;
+}
+
+.bb-playlist .playlist-item table td.handle {
+    width: 40px;
+}
+.bb-playlist .playlist-item table td.icon-right{
+    cursor: pointer;
+    width: 20px;
+}
+.bb-playlist .playlist-item table td.handle .dashicons{
+    cursor: move;
+}
+.bb-playlist .playlist-item input{
+    width: 100%;
+}
+.bb-playlist .playlist-item input.invalid{
+    border-color: #FF0033 !important;
+    -webkit-box-shadow: 0 0 2px rgba(255,0,51,.8) !important;
+    box-shadow: 0 0 2px rgba(255,0,51,.8) !important;
+}
+.bb-playlist .bb-playlist-save{
+    min-height: 40px;
+}
+.bb-playlist .bb-playlist-save p.submit {
+    padding: 0 !important;
+}
+
+.accordion-content { 
+    display: none;
+    margin-left: 44px;
+    margin-right: 67px;
+}
+.accordion-content.default {
+    display: block;
+}
