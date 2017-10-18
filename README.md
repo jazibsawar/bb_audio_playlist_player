@@ -1,11 +1,4 @@
-=== Audio Playlist Player ===
-Contributors: jazibsawar
-Tags: audio, audio player, wordpress audio playlist, playlist, playlist player, wordpress playlist shortcode
-Requires at least: 4.4
-Tested up to: 4.8.1
-Stable tag: 1.0.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+# Audio Playlist Player #
 
 Fastest WordPress Audio Playlist plugin that is utilizing WP playlist and Custom Post Type to handle external sources and MORE.
 
@@ -13,7 +6,6 @@ Fastest WordPress Audio Playlist plugin that is utilizing WP playlist and Custom
 
 Are you looking for solution that integrates WordPress default playlist with minimal look and your External Audio files from CDN, Amazon S3, Google Drive etc. Then *Audio Playlist Player* is best choice for you.
 It provides Custom Post Type to manage your playlists and shortcode to render the playlist on front-end. It is simple solution but yet very effective. Enjoy the Plugin.
-
 
 == Installation ==
 
@@ -38,7 +30,7 @@ It provides Custom Post Type to manage your playlists and shortcode to render th
 
 Shortcode structure is `[_bb_playlist id='ID_OF_PLAYLIST' style='light|dark' autoplay='false|true' ]`.
 
-**Parameters**
+= Parameters =
 
 1. **id** is ID of playlist. Default is '-1'
 2. **style** is look and feel of playlist. Default is 'light'
