@@ -11,25 +11,12 @@
 
 class Playlist
 {
-    /**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
 	private $plugin_name;
-    
-    /**
-     * The version of this plugin.
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var      string    $version    The current version of this plugin.
-     */
     private $version;
-
     private $type = 'audio';
+    private $styles    = array( 'light', 'dark' );
+    private $style = '';
+    private $instances = array(0,0);
     private $instance = 0;
     private $class = 'bb-playlist';
  
@@ -43,68 +30,83 @@ class Playlist
     public function bb_playlist_shortcode( $atts = array()) {
         $atts = shortcode_atts(
             array(
+                'id'             => '-1',
                 'style'          => 'light',
-                'autoplay'       => 'false',
-                'id'             => -1
+                'autoplay'       => 'false'
             ), 
             $atts, 
             '_bb_playlist' 
         );
 
-        if ( $atts['id'] != -1 
-            && 'bb_playlist_player' === get_post_type( $atts['id'] ) 
-            && 'publish' === get_post_status( $atts['id'] ) ) {
+        $pid = intval($atts['id']);
 
-            global $content_width;
-            $this->instance++;
+        if ( $pid != -1 
+            && 'bb_playlist_player' === get_post_type( $pid ) 
+            && 'publish' === get_post_status( $pid ) ) {
 
-            // Autoplay:
-            $autoplay = wp_validate_boolean( $atts['autoplay'] ) ? 'autoplay="yes"' : '';
-    
-            // Enqueue default scripts and styles for the playlist.
-            if( 1 === $this->instance ){
-                do_action( 'wp_playlist_scripts', esc_attr( $this->type ), esc_attr( $atts['style'] ) );
-                wp_enqueue_style( $this->plugin_name, plugin_dir_url(__DIR__ . '..') . 'css/bb-playlist-player.css', array(), $this->version, 'all' );
-            }   
+            $playlists = get_post_meta( $pid, 'bb_playlist',true);
 
-            /* HTML output for playlist*/
-            $html = '';
+            if(is_array($playlists) && count($playlists)) {
+                global $content_width;
+                $this->instances[0]++;
+                $this->instances[1]++;
+                $this->instance++;
 
-            $html .= sprintf( '<div class="wp-playlist wp-%s-playlist wp-playlist-%s ' .  esc_attr( $this->class ) . '">', 
-                $this->type, esc_attr( $atts['style'] )
-            );
+                $this->style = ( in_array( $atts['style'], $this->styles, TRUE ) ) ? esc_attr( $atts['style'] ) : 'light';
+                // Autoplay:
+                $autoplay = wp_validate_boolean( $atts['autoplay'] ) ? 'autoplay="yes"' : '';
+        
+                // Enqueue default scripts and styles for the playlist.
+                if( 1 === $this->instances[0] ){
+                    do_action( 'wp_playlist_scripts', esc_attr( $this->type ), esc_attr( $this->style ) );
+                }
+                if( 1 === $this->instances[1] ){
+                    do_action( 'wp_playlist_scripts', esc_attr( $this->type ), esc_attr( $this->style ) );
+                }
+                if(1 === $this->instance) {
+                    wp_enqueue_style( $this->plugin_name, plugin_dir_url(__DIR__ . '..') . 'css/bb-playlist-player.css', array(), $this->version, 'all' );
+                }
+                /* HTML output for playlist*/
+                $html = '';
 
-            /* Audio player current song info */
-            $html .= '<div class="wp-playlist-current-item"></div>';   
+                $html .= sprintf( '<div class="wp-playlist wp-%s-playlist wp-playlist-%s ' .  esc_attr( $this->class ) . '">', 
+                    $this->type, esc_attr( $this->style )
+                );
 
-            $html .= '<audio controls="controls" ' . $autoplay . ' preload="none" width="100%" style="visibility: hidden"></audio>';
+                /* Audio player current song info */
+                $html .= '<div class="wp-playlist-current-item"></div>';   
 
-            // Next/Previous:
-            $html .= '<div class="wp-playlist-next"></div><div class="wp-playlist-prev"></div>';
+                $html .= '<audio controls="controls" ' . $autoplay . ' preload="none" width="100%" style="visibility: hidden"></audio>';
 
-            $html .= sprintf( '
-                <script class="wp-playlist-script" type="application/json">{
-                    "type":"%s",
-                    "tracklist":true,
-                    "tracknumbers":true,
-                    "images":true,
-                    "artists":true,
-                    "tracks":[%s]
-                }</script>', 
-                esc_attr( $this->type ), 
-                $this->get_tracks_from_playlist( $atts['id'] )
-            );
-            // Close div container:
-            $html .= '</div>';
-            return $html;
+                // Next/Previous:
+                $html .= '<div class="wp-playlist-next"></div><div class="wp-playlist-prev"></div>';
+
+                $html .= sprintf( '
+                    <script class="wp-playlist-script" type="application/json">{
+                        "type":"%s",
+                        "tracklist":true,
+                        "tracknumbers":true,
+                        "images":true,
+                        "artists":true,
+                        "tracks":[%s]
+                    }</script>', 
+                    esc_attr( $this->type ), 
+                    $this->get_tracks_from_playlist($pid, $playlists)
+                );
+                // Close div container:
+                $html .= '</div>';
+                return $html;
+            }
+            else {
+                return '<p>No audio files to display. Please add!</p>';
+            }
         }
         else {
             return '<p>Invalid Playlist ID.</p>';
         }
     }
 
-    public function get_tracks_from_playlist($playlist_id) {
-        $playlists = get_post_meta( $playlist_id, 'bb_playlist',true);
+    public function get_tracks_from_playlist($playlist_id,$playlists) {
         $image_url = sprintf( '%s/wp-includes/images/media/%s.png', get_site_url(), $this->type );
         if(has_post_thumbnail($playlist_id)){
             $image_url = get_the_post_thumbnail_url($playlist_id);

@@ -14,11 +14,11 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Audio Playlist Player
- * Plugin URI:        https://bitbytes.io
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin URI:        https://github.com/jazibsawar/bb_audio_playlist_player/
+ * Description:       Fastest WordPress Audio Playlist plugin that is utilizing WP playlist and Custom Post Type to handle external sources.
  * Version:           1.0.0
  * Author:            Jazib Sawar
- * Author URI:        https://jazibsawar.com
+ * Author URI:        https://github.com/jazibsawar/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       bb-audio-playlist-player
@@ -31,6 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 define( 'PLUGIN_NAME_VERSION', '1.0.0' );
+define( 'PLUGIN_BASE_NAME' , plugin_basename(__FILE__));
 
 /**
  * The code that runs during plugin activation.

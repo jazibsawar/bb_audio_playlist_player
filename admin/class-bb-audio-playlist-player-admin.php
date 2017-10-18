@@ -77,6 +77,17 @@ class Bb_Audio_Playlist_Player_Admin {
 		}
 	}
 
+	public function bb_plugin_links($actions, $plugin_file) {
+		static $plugin;
+		if (!isset($plugin))
+			$plugin = PLUGIN_BASE_NAME;
+		if ($plugin == $plugin_file) {
+			$playlists = array('playlists' => '<a href="edit.php?post_type=bb_playlist_player">' . __('Manage Playlists') . '</a>');
+			$actions = array_merge($actions, $playlists);
+		}
+		return $actions;
+	}
+
 	private function is_bb_playlist_player() {
 		global $pagenow, $typenow;
 		if($pagenow == 'post.php' || ($pagenow == 'post-new.php' && $typenow == 'bb_playlist_player' )) {
@@ -90,7 +101,7 @@ class Bb_Audio_Playlist_Player_Admin {
 		$plural = 'Audio Playlists';
 	   
 		$labels = array(
-		 'name'                    => $singular,
+		 'name'                    => $plural,
 		 'singular_name'           => $singular,
 		 'add_new'                 => 'Add New',
 		 'add_new_item'            => 'Add New ' . $singular,
@@ -154,14 +165,14 @@ class Bb_Audio_Playlist_Player_Admin {
 			array( $this, 'bb_shortcode_metabox_cb' ), 
 			'bb_playlist_player', 
 			'side', 
-			'low'
+			'default'
 		);
 	}
 
 	public function bb_shortcode_metabox_cb($post) {
 		$status = get_post_status($post->ID);
 		if($status && $status === "publish"){
-			echo '<input style="width: 100%;padding: 5px 10px;" type="text" readonly value="[_bb_playlist id='.$post->ID.' ]" >';
+			echo '<input style="width: 100%;padding: 5px 10px;" type="text" readonly value="[_bb_playlist id=\''.$post->ID.'\' ]" >';
 		}
 	}
 

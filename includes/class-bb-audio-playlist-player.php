@@ -158,6 +158,7 @@ class Bb_Audio_Playlist_Player {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'init', $plugin_admin, 'bb_cpt' );
 		$this->loader->add_action( 'save_post', $plugin_admin, 'bb_cpt_playlist_metabox_save' );
+		$this->loader->add_filter( 'plugin_action_links', $plugin_admin, 'bb_plugin_links', 10, 5 );
 	}
 
 	/**
